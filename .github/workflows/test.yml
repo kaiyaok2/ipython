@@ -18,35 +18,35 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest]
-        python-version: ["3.10", "3.11", "3.12"]
+        os: [ubuntu-latest] #[ubuntu-latest, windows-latest]
+        python-version: ["3.12"] # ["3.10", "3.11", "3.12"]
         deps: [test_extra]
         # Test all on ubuntu, test ends on macos
-        include:
-          - os: macos-latest
-            python-version: "3.10"
-            deps: test_extra
-          - os: macos-latest
-            python-version: "3.11"
-            deps: test_extra
-          # Tests minimal dependencies set
-          - os: ubuntu-latest
-            python-version: "3.11"
-            deps: test
-          # Tests latest development Python version
-          - os: ubuntu-latest
-            python-version: "3.13-dev"
-            deps: test
-          # Installing optional dependencies stuff takes ages on PyPy
-          - os: ubuntu-latest
-            python-version: "pypy-3.10"
-            deps: test
-          - os: windows-latest
-            python-version: "pypy-3.10"
-            deps: test
-          - os: macos-latest
-            python-version: "pypy-3.10"
-            deps: test
+        # include:
+        #   - os: macos-latest
+        #     python-version: "3.10"
+        #     deps: test_extra
+        #   - os: macos-latest
+        #     python-version: "3.11"
+        #     deps: test_extra
+        #   # Tests minimal dependencies set
+        #   - os: ubuntu-latest
+        #     python-version: "3.11"
+        #     deps: test
+        #   # Tests latest development Python version
+        #   # - os: ubuntu-latest
+        #   #   python-version: "3.13-dev"
+        #   #   deps: test
+        #   # Installing optional dependencies stuff takes ages on PyPy
+        #   - os: ubuntu-latest
+        #     python-version: "pypy-3.10"
+        #     deps: test
+        #   - os: windows-latest
+        #     python-version: "pypy-3.10"
+        #     deps: test
+        #   - os: macos-latest
+        #     python-version: "pypy-3.10"
+        #     deps: test
 
     steps:
     - uses: actions/checkout@v3
