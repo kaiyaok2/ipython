@@ -91,7 +91,7 @@ jobs:
       env:
         COLUMNS: 120
       run: |
-        pytest -vv -r x --durations=0 --color=yes -raXxs ${{ startsWith(matrix.python-version, 'pypy') && ' ' || '--cov --cov-report=xml' }} --json-report --json-report-file=./report-${{ matrix.python-version }}-${{runner.os}}.json --maxfail=15 --rank --rank-weight=0-1-0
+        pytest --color=yes -raXxs ${{ startsWith(matrix.python-version, 'pypy') && ' ' || '--cov --cov-report=xml' }} --json-report --json-report-file=./report-${{ matrix.python-version }}-${{runner.os}}.json --maxfail=15 --rank --rank-weight=0-1-0
     - name: Save pytest-ranking cache
       id: save-pytest-ranking-cache
       if: always()
