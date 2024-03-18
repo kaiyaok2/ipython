@@ -80,11 +80,25 @@ jobs:
     - name: Check manifest
       if: runner.os != 'Windows'  # setup.py does not support sdist on Windows
       run: check-manifest
+    - name: Restore pytest-ranking cache
+      id: restore-pytest-ranking-cache
+      if: always()
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ github.workspace }}/.tox/py312/.pytest_cache/v/pytest_ranking_data
+        key: pytest-ranking-cache-${{ runner.os }}-${{ matrix.python }}
     - name: pytest
       env:
         COLUMNS: 120
       run: |
-        pytest --color=yes -raXxs ${{ startsWith(matrix.python-version, 'pypy') && ' ' || '--cov --cov-report=xml' }} --json-report --json-report-file=./report-${{ matrix.python-version }}-${{runner.os}}.json --maxfail=15
+        pytest -vv --durations=0 --color=yes -raXxs ${{ startsWith(matrix.python-version, 'pypy') && ' ' || '--cov --cov-report=xml' }} --json-report --json-report-file=./report-${{ matrix.python-version }}-${{runner.os}}.json --maxfail=15 --rank --rank-weight=0-1-0
+    - name: Save pytest-ranking cache
+      id: save-pytest-ranking-cache
+      if: always()
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ github.workspace }}/.tox/py312/.pytest_cache/v/pytest_ranking_data
+        key: pytest-ranking-cache-${{ runner.os }}-${{ matrix.python }}-${{ github.run_id }}
     - uses: actions/upload-artifact@v3
       with:
           name: upload pytest timing reports as json
